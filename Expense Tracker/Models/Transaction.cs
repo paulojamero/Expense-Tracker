@@ -9,8 +9,11 @@ namespace Expense_Tracker.Models
         public int TransactionId { get; set; }
 
         //Category Id - Foreign key
+        [Range(1, int.MaxValue, ErrorMessage = "Please choose a category..")]
         public int CategoryId { get; set; }
         public Category? Category { get; set; }
+
+        [Range(1, int.MaxValue, ErrorMessage = "Amount should be greater than zero")]
         public int Amount { get; set; }
         [Column(TypeName = "nvarchar(75)")]
         public string? Note { get; set; }
