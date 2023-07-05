@@ -16,6 +16,7 @@ namespace Expense_Tracker.Controllers
 
         public async Task<ActionResult> Index()
         {
+            CultureInfo culture = CultureInfo.CreateSpecificCulture("en-PH");
 
             //last 7 days
             DateTime StartDate = DateTime.Today.AddDays(-6);
@@ -31,19 +32,31 @@ namespace Expense_Tracker.Controllers
             int TotalIncome = SelectedTransactions
                 .Where(i => i.Category.Type == "Income")
                 .Sum(j => j.Amount);
-            ViewBag.TotalIncome = TotalIncome.ToString("C0");
+            ViewBag.TotalIncome = String.Format(culture, "{0:C0}", TotalIncome);
 
             //Total Expenses
             int TotalExpense = SelectedTransactions
                 .Where(i => i.Category.Type == "Expense")
                 .Sum(j => j.Amount);
-            ViewBag.TotalExpense = TotalExpense.ToString("C0");
+            ViewBag.TotalExpense = String.Format(culture, "{0:C0}", TotalExpense);
 
             //Balance Amount
             int Balance = TotalIncome - TotalExpense;
-            CultureInfo culture = CultureInfo.CreateSpecificCulture("en-PH");
             culture.NumberFormat.CurrencyNegativePattern = 1;
             ViewBag.Balance = String.Format(culture,"{0:C0}", Balance);
+
+
+            //Donut Chart - Expense by Category
+            ViewBag.DoughnutChartData = SelectedTransactions
+                .Where(i => i.Category.Type == "Expense")
+                .GroupBy(x => x.Category.CategoryId)
+                .Select(j => new
+                {
+                    categoryTitleWithIcon = j.First().Category.Icon + " " + j.First().Category.Title,
+                    amount = j.Sum(x => x.Amount),
+                    formattedAmount = j.Sum(x => x.Amount).ToString("C0"),
+                })
+                .ToList();
 
             return View();
         }

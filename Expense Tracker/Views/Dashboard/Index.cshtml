@@ -40,3 +40,28 @@
     </div>
     </div>
 </div>
+
+
+@*Doughnut Chart and Spline Chart*@
+<div class="row mb-4">
+    <div class="col-md-4">
+        <div class="widget chart">
+            <div class="p-4">
+                <h5 class="fw-bold">Expense by Category</h5>
+            </div>
+            <ejs-accumulationchart id="doughtnutchart" enableSmartLabels>
+                <e-accumulation-series-collection>
+                    <e-accumulation-series dataSource="@ViewBag.DoughnutChartData"
+                        xName="categoryTitleWithIcon" yName="amount"
+                        innerRadius="60%" legendShape=Circle>
+                        <e-accumulationseries-datalabel name="formattedAmount" visible></e-accumulationseries-datalabel>
+                    </e-accumulation-series>
+                </e-accumulation-series-collection>
+                <e-accumulationchart-legendsettings position="Top" toggleVisibility="false">
+                    <e-legendsettings-textstyle color="#fff" size="1rem"></e-legendsettings-textstyle>
+                </e-accumulationchart-legendsettings>
+            </ejs-accumulationchart>
+        </div>
+    </div>
+    <div class="col-md-4"></div>
+    </div>
